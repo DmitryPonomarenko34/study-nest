@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  db_auth: 
+    container_name: db_auth
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=root
+    image: postgres:14.5-bullseye
