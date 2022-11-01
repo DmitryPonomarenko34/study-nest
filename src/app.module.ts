@@ -1,16 +1,18 @@
+// Core
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
-// import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { User } from './user/user.entity';
+
+// Module
+import { UserModule } from './user/user.module';
+
+// Entity
+import { UserEntity } from './user/entity/user.entity';
 
 const enviroment = process.env.NODE_ENV || 'development';
 @Module({
   imports: [
     UserModule,
-    // AuthModule,
     ConfigModule.forRoot({
       envFilePath: `.env.${enviroment}`,
       isGlobal: true,
@@ -21,12 +23,10 @@ const enviroment = process.env.NODE_ENV || 'development';
       username: 'admin',
       port: 5432,
       password: 'root',
+      entities: [UserEntity],
       database: 'postgres',
-      entities: [User],
       synchronize: true,
     }),
   ],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}
