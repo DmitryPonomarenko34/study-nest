@@ -5,14 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 // Module
 import { UserModule } from './user/user.module';
+import { TaskModule } from './task/task.module';
 
 // Entity
 import { UserEntity } from './user/entity/user.entity';
+import { TaskEntity } from './task/entity';
 
 const enviroment = process.env.NODE_ENV || 'development';
 @Module({
   imports: [
     UserModule,
+    TaskModule,
     ConfigModule.forRoot({
       envFilePath: `.env.${enviroment}`,
       isGlobal: true,
@@ -23,7 +26,7 @@ const enviroment = process.env.NODE_ENV || 'development';
       username: 'admin',
       port: 5432,
       password: 'root',
-      entities: [UserEntity],
+      entities: [UserEntity, TaskEntity],
       database: 'postgres',
       synchronize: true,
     }),
