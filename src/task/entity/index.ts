@@ -1,6 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+// Core
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
+// Interface
 import { ITask } from '../interface';
+import { StatusEntity } from 'src/status/entity';
 
 @Entity('task')
 export class TaskEntity implements ITask {
@@ -13,6 +22,7 @@ export class TaskEntity implements ITask {
   @Column()
   description: string;
 
-  @Column({ type: 'varchar' })
-  status: { ready: boolean; progress: boolean };
+  @OneToOne(() => StatusEntity, (status) => status.task)
+  @JoinColumn()
+  status: StatusEntity;
 }

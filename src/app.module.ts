@@ -10,12 +10,15 @@ import { TaskModule } from './task/task.module';
 // Entity
 import { UserEntity } from './user/entity/user.entity';
 import { TaskEntity } from './task/entity';
+import { StatusEntity } from './status/entity';
+import { StatusModule } from './status/status.module';
 
 const enviroment = process.env.NODE_ENV || 'development';
 @Module({
   imports: [
     UserModule,
     TaskModule,
+    StatusModule,
     ConfigModule.forRoot({
       envFilePath: `.env.${enviroment}`,
       isGlobal: true,
@@ -26,7 +29,7 @@ const enviroment = process.env.NODE_ENV || 'development';
       username: 'admin',
       port: 5432,
       password: 'root',
-      entities: [UserEntity, TaskEntity],
+      entities: [UserEntity, TaskEntity, StatusEntity],
       database: 'postgres',
       synchronize: true,
     }),

@@ -10,9 +10,10 @@ import { TaskServices } from './service';
 
 // Entity
 import { TaskEntity } from './entity';
+import { StatusEntity } from 'src/status/entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TaskEntity])],
+  imports: [TypeOrmModule.forFeature([TaskEntity, StatusEntity])],
   controllers: [TaskController],
   providers: [TaskServices],
 })

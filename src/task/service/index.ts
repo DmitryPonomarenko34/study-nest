@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { StatusEntity } from 'src/status/entity';
 import { Repository } from 'typeorm';
 import { TaskEntity } from '../entity';
 import { ITask, ITaskOption } from '../interface';
@@ -9,14 +10,21 @@ export class TaskServices {
   constructor(
     @InjectRepository(TaskEntity)
     private readonly taskEntityRepository: Repository<TaskEntity>,
+
+    @InjectRepository(StatusEntity)
+    private readonly statusEntityRepository: Repository<StatusEntity>,
   ) {}
 
   async findAll(): Promise<ITask[]> {
-    return this.taskEntityRepository.find();
+    return await this.taskEntityRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.status', 'status')
+      .getMany();
   }
 
   async create(task: ITask): Promise<ITask> {
-    return this.taskEntityRepository.save(task);
+    await this.statusEntityRepository.save(task.status);
+    return await this.taskEntityRepository.save(task);
   }
 
   async remove(id: number): Promise<boolean> {
